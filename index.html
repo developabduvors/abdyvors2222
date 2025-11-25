@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-base-200 min-h-screen flex items-center justify-center">
 
-    
-    <script src="./main.js"></script>
+  <div id="loading" class=" fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+  <div id="user-container" class="flex justify-center"></div>
+
+  
+  <script src="main.js" defer></script>
 </body>
 </html>

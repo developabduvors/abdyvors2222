@@ -1,36 +1,56 @@
-async function renDerUser() {
+const loading = document.getElementById("loading");
+const userContainer = document.getElementById("user-container");
+
+async function renderUser() {
   try {
-    const res = await fetch("https://randomuser.me/api");
-    const data = await res.json();
+    loading.classList.remove("hidden");
+    const response = await fetch("https://randomuser.me/api/");
+    const data = await response.json();
+    const user = data.results[0];
+    userContainer.innerHTML = "";
+    const card = document.createElement("div");
+    card.className = "card bg-base-100 w-96 shadow-2xl";
 
-    document.body.innerHTML = ""; // eski contentni tozalash
+    card.innerHTML = `
+      <figure class="px-10 pt-10">
+        <img src="${user.picture.large}" 
+             alt="Foydalanuvchi rasmi" 
+             class="rounded-full w-32 h-32 object-cover border-4 border-primary" />
+      </figure>
 
-    data.results.forEach(user => {
-      const div = document.createElement("div");
-      div.className =
-"bg-white p-6 rounded-2xl shadow-lg text-center w-80 flex flex-col items-center justify-center"
+      <div class="card-body items-center text-center">
+        <h2 class="card-title text-2xl">
+          ${user.name.title} ${user.name.first} ${user.name.last}
+        </h2>
+        <p class="text-lg opacity-80">
+          ${user.location.street.number} ${user.location.street.name}<br>
+          ${user.location.city}, ${user.location.country}
+        </p>
+        <p class="mt-3">
+          <span class="font-medium">Email:</span>
+          <span class="text-primary">${user.email}</span>
+        </p>
 
-      // tugma yaratamiz
-      const btn = document.createElement("button");
-      btn.className =
-        "mt-5 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition";
-      btn.textContent = "Change user";
-      btn.addEventListener("click", renDerUser);
-
-      div.innerHTML = `
-        <img src="${user.picture.large}" alt="user picture" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200 mb-4 object-cover">
-        <h2 class="text-xl font-semibold text-gray-800">${user.name.title} ${user.name.first} ${user.name.last}</h2>
-        <span class="text-xl font-normal text-black">${user.location.street.name}</span>
-        <p class="text-xl font-normal text-blue-600"> <span class="text-black">email:</span>  ${user.email}</p>
-      `;
-
-      div.appendChild(btn);
-      document.body.appendChild(div);
-    });
-
+        <div class="card-actions mt-8">
+          <button class="btn btn-primary btn-wide" onclick="renderUser()">
+            Yangi foydalanuvchi
+          </button>
+        </div>
+      </div>
+    `;
+    userContainer.appendChild(card);
   } catch (error) {
-    console.log("xatolik:", error);
+    userContainer.innerHTML = `
+      <div class="alert alert-error shadow-lg max-w-md">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        <span>Xatolik: ${error.message}</span>
+      </div>
+    `;
+    console.error("Xato:", error);
+  } finally {
+    loading.classList.add("hidden");
   }
 }
-
-renDerUser();
+renderUser();
